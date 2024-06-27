@@ -1,0 +1,128 @@
+import requests
+
+# 你的 API Token
+API_TOKEN = '7224291126:AAHhptMyS'
+# 频道的聊天 ID，可以是类似 "@channelusername" 的格式
+# Group ID: -4209578167 6597534160
+CHANNEL_ID = '-10022'
+vpn_port = 7890
+# message = "Hello, this is a message from my bot!"
+# 发送信息的 URL
+send_message_url = f'https://api.telegram.org/bot{API_TOKEN}/sendMessage'
+prefixes = [
+    'https://pump.fun/',
+    'http://pump.fun/',
+    'https://www.pump.fun/',
+    'http://www.pump.fun/'
+]
+suffix = 'pump'
+# 请求参数
+cookies = {
+    'lang': 'zh-cn',
+    # 'guest_id': 'v1%3A171539694680494827',
+    # 'g_state': '{"i_p":1716037787921,"i_l":1}',
+    # 'kdt': '4LdiWQY76L0qdeDEzcEvNCqHHkwMKdcccWBBtbyd',
+    # 'night_mode': '0',
+    'auth_token': '1ee6d501b9684a198e3943378624adb4bc7b365a',
+    'ct0': 'ac5986525b3a1bb101dead960ff18a2b9b42d7c486e3dfd74161b92da7a4e8a6f097667a7baa92d182f4b71dc248aee9470421439a3bd55de38443ea5db3d67d20ff3e9630293b081be113db2ce10e48',
+    # 'twid': 'u%3D1699758658052046848',
+    # 'ai_user': 'uCGZOXc/2V3XSnn41c/8Ip|2024-05-29T07:09:17.065Z',
+    # 'guest_id_marketing': 'v1%3A171539694680494827',
+    # 'guest_id_ads': 'v1%3A171539694680494827',
+    # 'lang': 'zh-cn',
+    # 'twtr_pixel_opt_in': 'N',
+    # 'eu_cn': '1',
+    # 'external_referer': 'padhuUp37zg6jRiD1MkASWfyk%2FW5NwQL|0|8e8t2xd8A2w%3D',
+    # 'personalization_id': '"v1_Vn8WJNaytJohPxrTM+K3pg=="',
+}
+
+headers = {
+    'accept': '*/*',
+    'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+    'authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA',
+    'content-type': 'application/json',
+    # Requests sorts cookies= alphabetically
+    # 'cookie': 'lang=zh-cn; guest_id=v1%3A171539694680494827; g_state={"i_p":1716037787921,"i_l":1}; kdt=4LdiWQY76L0qdeDEzcEvNCqHHkwMKdcccWBBtbyd; night_mode=0; auth_token=2b77e4f872eefc7bb4e4f3ce4797f4f465711dc9; ct0=ed26a3dc35ba7a4dc50f6793cbf94b84b2547083df8987dbf5624b5ce9e73bd1fdf5aae75bc7762e634423e985edd03611001467ea9459f1fde5833cd8d3395e9b801d6a45463d585b895171f49eb8e9; twid=u%3D1699758658052046848; ai_user=uCGZOXc/2V3XSnn41c/8Ip|2024-05-29T07:09:17.065Z; guest_id_marketing=v1%3A171539694680494827; guest_id_ads=v1%3A171539694680494827; lang=zh-cn; twtr_pixel_opt_in=N; eu_cn=1; external_referer=padhuUp37zg6jRiD1MkASWfyk%2FW5NwQL|0|8e8t2xd8A2w%3D; personalization_id="v1_Vn8WJNaytJohPxrTM+K3pg=="',
+    'priority': 'u=1, i',
+    'referer': 'https://x.com/search?q=pump.fun&src=typed_query&f=live',
+    'sec-ch-ua': '"Microsoft Edge";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0',
+    'x-client-transaction-id': 'wFW9N7j6a/DPnRDgrDEq9SNqwsAIvMvlfNvDLHWEjbUZRLUa1gfa5KMTEkgqAug+yWbb2cLawUCfSabIuNwTno5Rynnkww',
+    'x-csrf-token': 'ac5986525b3a1bb101dead960ff18a2b9b42d7c486e3dfd74161b92da7a4e8a6f097667a7baa92d182f4b71dc248aee9470421439a3bd55de38443ea5db3d67d20ff3e9630293b081be113db2ce10e48',
+    # 'x-twitter-active-user': 'yes',
+    # 'x-twitter-auth-type': 'OAuth2Session',
+    'x-twitter-client-language': 'zh-cn',
+}
+
+params = {
+    'variables': '{"rawQuery":"pump.fun","count":20,"querySource":"typed_query","product":"Latest"}',
+    'features': '{"rweb_tipjar_consumption_enabled":true,"responsive_web_graphql_exclude_directive_enabled":true,"verified_phone_label_enabled":false,"creator_subscriptions_tweet_preview_api_enabled":true,"responsive_web_graphql_timeline_navigation_enabled":true,"responsive_web_graphql_skip_user_profile_image_extensions_enabled":false,"communities_web_enable_tweet_community_results_fetch":true,"c9s_tweet_anatomy_moderator_badge_enabled":true,"articles_preview_enabled":true,"tweetypie_unmention_optimization_enabled":true,"responsive_web_edit_tweet_api_enabled":true,"graphql_is_translatable_rweb_tweet_is_translatable_enabled":true,"view_counts_everywhere_api_enabled":true,"longform_notetweets_consumption_enabled":true,"responsive_web_twitter_article_tweet_consumption_enabled":true,"tweet_awards_web_tipping_enabled":false,"creator_subscriptions_quote_tweet_preview_enabled":false,"freedom_of_speech_not_reach_fetch_enabled":true,"standardized_nudges_misinfo":true,"tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled":true,"rweb_video_timestamps_enabled":true,"longform_notetweets_rich_text_read_enabled":true,"longform_notetweets_inline_media_enabled":true,"responsive_web_enhance_cards_enabled":false}',
+}
+
+response = requests.get('https://x.com/i/api/graphql/TQmyZ_haUqANuyBcFBLkUw/SearchTimeline', params=params,
+                        cookies=cookies, headers=headers)
+resp = response.json()
+# print(resp)
+# ['']['']['']
+# ['instructions'][0]['entries'][0  --  10]
+# resp['data']['search_by_raw_query']['search_timeline']['timeline']['instructions'][0]['entries'][0]['content']['itemContent']['tweet_results']['result']['legacy']['full_text']
+en = resp['data']['search_by_raw_query']['search_timeline']['timeline']['instructions'][0]['entries']
+aaaa = len(en)
+print(aaaa)
+for i in range(0, aaaa):
+    tweet_results = en[i]['content']['itemContent']['tweet_results']['result']
+    rest_id = tweet_results['rest_id']
+    user_results = tweet_results['core']['user_results']['result']['legacy']
+    user_followers_count = str(user_results['followers_count'])
+    user_friends_count = user_results['friends_count']
+    user_name = user_results['name']
+    user_screen_name = user_results['screen_name']
+
+    tweet_legacy = tweet_results['legacy']
+    created_at = tweet_legacy['created_at']
+    a = str(created_at).split()[3].split(':')
+    b = int(a[0]) + 8
+    if b >= 24:
+        b = b - 24
+    c = str(b) + ':' + a[1] + ':' + a[2]
+    # print(i)
+    # print('文案内容 :' + tweet_results['legacy']['full_text'])
+    # print('发布时间 :' + c)
+    # print('用户名 :' + user_name)
+    # print('推特粉丝 :' + user_followers_count
+    # print('文章链接 :https://x.com/' + user_screen_name + '/status/' + rest_id)
+    urls = tweet_legacy['entities']['urls']
+    if len(urls) > 0 and int(user_followers_count) > 100:
+        jj = len(urls)
+        # print(jj)
+        for j in range(0, jj):
+            url = urls[j]['expanded_url']
+            if any(url.startswith(prefix) for prefix in prefixes) and url.endswith('pump'):
+                for prefix in prefixes:
+                    if url.startswith(prefix):
+                        ca = url[len(prefix):]
+                        print('pump链接 :' + url)
+                        print('Ca :' + ca)
+                        text = (
+                            f"文案内容 : {tweet_results['legacy']['full_text']}\n"
+                            f"发布时间 : {c}\n"
+                            f"用户名 : {user_name}\n"
+                            f"推特粉丝 : {user_followers_count}\n"
+                            f"文章链接 : https://x.com/{user_screen_name}/status/{rest_id}\n"
+                            f"pump链接 : {url}\n"
+                            f"Ca : {ca}"
+                        )
+
+                        params = {
+                            'chat_id': CHANNEL_ID,
+                            'text': text
+                        }
+                        # 发送请求
+                        response = requests.get(send_message_url, params=params)
+                        # print(response.json())
+                        print('\n')
