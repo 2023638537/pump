@@ -1,0 +1,34 @@
+import requests
+
+vpn_port = 7897
+# 你的 API Token
+API_TOKEN = '7224291126:AAHhptMySraz5d'
+GROUP_ID = None
+
+# 获取更新的 URL
+get_updates_url = f'https://api.telegram.org/bot{API_TOKEN}/getUpdates'
+
+# 获取更新
+response = requests.get(get_updates_url, proxies={'http': f'http://127.0.0.1:{vpn_port}', 'https': f'http://127.0.0.1:{vpn_port}'})
+updates = response.json()
+
+# 提取群组 ID
+for update in updates['result']:
+    if 'message' in update:
+        chat = update['message']['chat']
+        if chat['type'] in ['group', 'supergroup']:
+            GROUP_ID = chat['id']
+            print(f'Group ID: {GROUP_ID}')
+
+# 发送消息到群组
+if GROUP_ID:
+    send_message_url = f'https://api.telegram.org/bot{API_TOKEN}/sendMessage'
+    message = "Hello, this is a message from my bot!"
+    params = {
+        'chat_id': GROUP_ID,
+        'text': message
+    }
+    response = requests.get(send_message_url, params=params,
+                            proxies={'http': f'http://127.0.0.1:{vpn_port}', 'https': f'http://127.0.0.1:{vpn_port}'})
+
+    print(response.json())
